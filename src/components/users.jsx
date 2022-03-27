@@ -14,6 +14,7 @@ const Users = () => {
     
     const renderPhrase = () => {
         const plural= [`11`,`12`,`13`,`14`,`15`,`16`,`17`,`18`,`19`];
+
         if (plural.includes(`${users.length}`.slice(-2))) {
             return <span className="badge bg-primary">{users.length} человек тусанет с тобой сегодня</span>;
         } else if (`${users.length}`.slice(-1) === '2' || `${users.length}`.slice(-1) === '3' || `${users.length}`.slice(-1) === '4') {
@@ -85,6 +86,6 @@ const Users = () => {
             {renderTable()}
         </>
     );
-}
+};
 
 export default Users;
