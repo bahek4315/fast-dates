@@ -13,19 +13,20 @@ const Users = () => {
     };
     
     const renderPhrase = () => {
-        const plural= [`11`,`12`,`13`,`14`,`15`,`16`,`17`,`18`,`19`];
-
-        if (plural.includes(`${users.length}`.slice(-2))) {
-            return <span className="badge bg-primary">{users.length} человек тусанет с тобой сегодня</span>;
-        } else if (`${users.length}`.slice(-1) === '2' || `${users.length}`.slice(-1) === '3' || `${users.length}`.slice(-1) === '4') {
-            return <span className="badge bg-primary">{users.length} человека тусанет с тобой сегодня</span>; 
+        let phrase = '';
+        if (Number(`${users.length}`.slice(-2)) >= 11 && Number(`${users.length}`.slice(-2)) <= 19) {
+            phrase = `${users.length} человек`
+        } else if (Number(`${users.length}`.slice(-1)) >= 2 && Number(`${users.length}`.slice(-1)) <= 4) {
+            phrase = `${users.length} человека`
         } else if (`${users.length}`.slice(-1) === '1') {
-            return <span className="badge bg-primary">{users.length} человек тусанет с тобой сегодня</span>;
+            phrase = `${users.length} человек`
         } else if (users.length === 0) {
             return <span className="badge bg-danger">Никто с тобой не тусанет</span>;
         } else {
-            return <span className="badge bg-primary">{users.length} человек тусанет с тобой сегодня</span>;
+            phrase = `${users.length} человек`
         }
+
+        return <span className="badge bg-primary">{phrase} тусанет с тобой сегодня</span>;
     };
 
     const renderQualityClass = (quality) => {
