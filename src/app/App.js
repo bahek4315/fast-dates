@@ -20,7 +20,7 @@ const App = () => {
             currentState[foundPosition].bookmark = true;
         }
         setUsers(currentState);
-    }
+    };
     
     return (
         <>
