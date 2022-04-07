@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Users from './components/users.jsx';
-import SeachStatus from './components/seachStatus';
+import SearchStatus from './components/searchStatus';
 import api from './api';
 
 
@@ -21,13 +21,13 @@ const App = () => {
     if (users.length === 0) {
         return (
             <>
-                <SeachStatus quantity={users.length}/>
+                <SearchStatus quantity={users.length}/>
             </>
         );
     } else {
         return (
             <>
-                <SeachStatus quantity={users.length}/>
+                <SearchStatus quantity={users.length}/>
                 <Users usersList={users} onDelete={handleDelete} onBookmark={handleBookmark}/>
             </>
         );
