@@ -17,13 +17,21 @@ const App = () => {
         currentState[foundPosition].bookmark = !currentState[foundPosition].bookmark;
         setUsers(currentState);
     };
-    
-    return (
-        <>
-            <SeachStatus quantity={users.length}/>
-            <Users usersList={users} onDelete={handleDelete} onBookmark={handleBookmark}/>
-        </>
-    );
+
+    if (users.length === 0) {
+        return (
+            <>
+                <SeachStatus quantity={users.length}/>
+            </>
+        );
+    } else {
+        return (
+            <>
+                <SeachStatus quantity={users.length}/>
+                <Users usersList={users} onDelete={handleDelete} onBookmark={handleBookmark}/>
+            </>
+        );
+    }
 };
 
 export default App;
