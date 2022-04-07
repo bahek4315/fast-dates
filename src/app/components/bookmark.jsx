@@ -3,15 +3,15 @@ import React from 'react';
 const Bookmark = (props) => {    
     const userId = props.id;
     const boolean = props.state;
+    let bookmarkClass = '';
     if (boolean) {
-        return (
-            <i className="bi bi-bookmark-fill" onClick={() => props.onBookmark(userId)}></i>
-        );
+        bookmarkClass = 'bi bi-bookmark-fill';
     } else {
-        return (
-            <i className="bi bi-bookmark" onClick={() => props.onBookmark(userId)}></i>
-        );
+        bookmarkClass = 'bi bi-bookmark';
     }
+    return (
+        <i className={bookmarkClass} onClick={() => props.onBookmark(userId)}></i>
+    );
 }
 
 export default Bookmark;
