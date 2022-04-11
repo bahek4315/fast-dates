@@ -13,6 +13,17 @@ const Users = ({ users, ...rest }) => {
     };
     const userCrop = paginate(users, currentPage, pageSize);
 
+    const handlePageDecrement = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prevState) => prevState - 1);
+        }
+    };
+    const handlePageIncrement = () => {
+        if (currentPage < Math.ceil(count / pageSize)) {
+            setCurrentPage((prevState) => prevState + 1);
+        }
+    };
+
     return (
         <>
             {count > 0 && (
@@ -40,6 +51,8 @@ const Users = ({ users, ...rest }) => {
                 pageSize={pageSize}
                 currentPage={currentPage}
                 onPageChange={handlePageChange}
+                onPageDecrement={handlePageDecrement}
+                onPageIncrement={handlePageIncrement}
             />
         </>
     );
