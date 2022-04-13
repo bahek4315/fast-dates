@@ -11,7 +11,7 @@ const Pagination = ({
     onPageIncrement
 }) => {
     const pageCount = Math.ceil(itemsCount / pageSize);
-    if (pageCount === 1) return null;
+    if (pageCount < 2) return null;
     const pages = _.range(1, pageCount + 1);
     return (
         <>
@@ -23,9 +23,7 @@ const Pagination = ({
                         }
                         onClick={onPageDecrement}
                     >
-                        <a href="#s" className="page-link">
-                            Предыдущая
-                        </a>
+                        <button className="page-link">Предыдущая</button>
                     </li>
                     {pages.map((page) => (
                         <li
@@ -35,13 +33,12 @@ const Pagination = ({
                             }
                             key={'page_' + page}
                         >
-                            <a
-                                href="#s"
+                            <button
                                 className="page-link"
                                 onClick={() => onPageChange(page)}
                             >
                                 {page}
-                            </a>
+                            </button>
                         </li>
                     ))}
                     <li
@@ -51,9 +48,7 @@ const Pagination = ({
                         }
                         onClick={onPageIncrement}
                     >
-                        <a href="#s" className="page-link">
-                            Следующая
-                        </a>
+                        <button className="page-link">Следующая</button>
                     </li>
                 </ul>
             </nav>
