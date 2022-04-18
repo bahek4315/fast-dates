@@ -45,7 +45,6 @@ const Users = ({ users, ...rest }) => {
 
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfessions(data));
-        console.log(professions);
     }, []);
 
     useEffect(() => {
