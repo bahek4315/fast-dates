@@ -28,7 +28,6 @@ const GroupList = ({
             </ul>
         );
     } else {
-        console.log(items);
         return (
             <ul className="list-group">
                 {items.map((item) => (
