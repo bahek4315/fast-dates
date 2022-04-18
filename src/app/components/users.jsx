@@ -22,7 +22,7 @@ const Users = ({ users, ...rest }) => {
     };
 
     const filteredUsers = selectedProf
-        ? users.filter((user) => user.profession === selectedProf)
+        ? users.filter((user) => user.profession._id === selectedProf._id)
         : users;
     const count = filteredUsers.length;
     const userCrop = paginate(filteredUsers, currentPage, pageSize);
@@ -45,6 +45,7 @@ const Users = ({ users, ...rest }) => {
 
     useEffect(() => {
         api.professions.fetchAll().then((data) => setProfessions(data));
+        console.log(professions);
     }, []);
 
     useEffect(() => {
