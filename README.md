@@ -1,3 +1,11 @@
+## Changes in lessons:
+# Lesson 3: 
+redone to components + bookmarks
+# Lesson 4: 
+Added pagination
+# Lesson 5: 
+added filtration + imitation of fetch request
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
