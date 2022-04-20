@@ -1,10 +1,20 @@
 ## Changes in lessons:
-# Lesson 3: 
+
+# Lesson 3:
+
 redone to components + bookmarks
-# Lesson 4: 
+
+# Lesson 4:
+
 Added pagination
-# Lesson 5: 
+
+# Lesson 5:
+
 added filtration + imitation of fetch request
+
+# Lesson 6
+
+added sorting, component usersTable for <table>
 
 # Getting Started with Create React App
 
