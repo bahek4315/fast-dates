@@ -15,10 +15,16 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
 
     const renderArrows = (path) => {
         if (path === selectedSort.path) {
-            if (selectedSort.order === 'asc') {
-                return <span className="bi bi-caret-up-fill ms-1" />;
-            }
-            return <span className="bi bi-caret-down-fill ms-1" />;
+            return (
+                <span
+                    className={
+                        'bi ms-1' +
+                        (selectedSort.order === 'asc'
+                            ? ' bi-caret-up-fill'
+                            : ' bi-caret-down-fill')
+                    }
+                />
+            );
         } else return null;
     };
     return (
