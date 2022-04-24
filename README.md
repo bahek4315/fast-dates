@@ -14,7 +14,7 @@ added filtration + imitation of fetch request
 
 # Lesson 6
 
-added sorting, component usersTable for <table>
+added sorting, component usersTable for table tag
 
 # Getting Started with Create React App
 
