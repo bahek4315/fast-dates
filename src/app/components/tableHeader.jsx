@@ -25,7 +25,7 @@ const TableHeader = ({ onSort, selectedSort, columns }) => {
                     }
                 />
             );
-        } else return null;
+        }
     };
     return (
         <thead>
