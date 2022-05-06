@@ -16,6 +16,10 @@ added filtration + imitation of fetch request
 
 added sorting, component usersTable for table tag
 
+# Lesson 7
+
+added NavBar and links for each user
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
