@@ -18,7 +18,7 @@ added sorting, component usersTable for table tag
 
 # Lesson 7
 
-added NavBar and links for each user
+added NavBar and links for each user and their personal page
 
 # Getting Started with Create React App
 
