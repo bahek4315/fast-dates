@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api';
 import QualitiesList from './qualitiesList';
@@ -8,7 +8,10 @@ const UserPage = () => {
     const params = useParams();
     const { userId } = params;
 
-    api.users.getById(userId).then((data) => setUser(data));
+    useEffect(
+        () => api.users.getById(userId).then((data) => setUser(data)),
+        []
+    );
 
     if (user) {
         return (
