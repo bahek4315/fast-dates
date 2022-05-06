@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import MainPage from './components/mainPage';
 import Login from './components/login';
 import NavBar from './components/navBar';
-import Test from './components/textUser';
+import UserPage from './components/userPage';
 
 function App() {
     // return <Users />;
@@ -15,7 +15,7 @@ function App() {
                 <Route path="/" exact component={MainPage} />
                 <Route path="/login" component={Login} />
                 <Route path="/users" exact component={Users} />
-                <Route path="/users/:userId?" component={Test} />
+                <Route path="/users/:userId?" component={UserPage} />
             </Switch>
         </>
     );
