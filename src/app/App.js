@@ -1,10 +1,11 @@
 import React from 'react';
-import Users from './components/users';
-import { Switch, Route } from 'react-router-dom';
-import MainPage from './components/mainPage';
-import Login from './components/login';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import MainPage from './layouts/mainPage';
+import Login from './layouts/login';
+import Users from './layouts/users';
 import NavBar from './components/navBar';
 import UserPage from './components/userPage';
+import NotFound from './layouts/notFound';
 
 function App() {
     // return <Users />;
@@ -16,6 +17,8 @@ function App() {
                 <Route path="/login" component={Login} />
                 <Route path="/users" exact component={Users} />
                 <Route path="/users/:userId?" component={UserPage} />
+                <Route path="/404" component={NotFound} />
+                <Redirect to="/404" />
             </Switch>
         </>
     );
