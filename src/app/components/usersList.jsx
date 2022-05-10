@@ -7,7 +7,7 @@ import GroupList from './groupList';
 import api from '../api';
 import _ from 'lodash';
 
-const Users = () => {
+const UsersList = () => {
     const pageSize = 8;
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfessions] = useState();
@@ -62,6 +62,7 @@ const Users = () => {
     useEffect(() => {
         setCurrentPage(1);
     }, [selectedProf]);
+
     if (users) {
         const filteredUsers = selectedProf
             ? users.filter((user) => user.profession._id === selectedProf._id)
@@ -123,4 +124,4 @@ const Users = () => {
     return 'loading...';
 };
 
-export default Users;
+export default UsersList;
