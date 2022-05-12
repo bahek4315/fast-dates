@@ -20,6 +20,10 @@ added sorting, component usersTable for table tag
 
 added NavBar and links for each user and their personal page
 
+# Lesson 7
+
+added Login page + form in it and Search in Users
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
