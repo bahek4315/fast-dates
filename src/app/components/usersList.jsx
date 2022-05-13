@@ -65,7 +65,7 @@ const UsersList = () => {
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [selectedProf]);
+    }, [selectedProf, searchData]);
 
     if (users) {
         const filteredSearchUsers = users.filter((user) =>
