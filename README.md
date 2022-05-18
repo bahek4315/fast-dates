@@ -20,7 +20,7 @@ added sorting, component usersTable for table tag
 
 added NavBar and links for each user and their personal page
 
-# Lesson 9
+# Lesson 7
 
 added Login page + form in it and Search in Users
 
