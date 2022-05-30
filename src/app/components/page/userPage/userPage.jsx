@@ -12,7 +12,6 @@ const UserPage = () => {
         () =>
             api.users.getById(userId).then((data) => {
                 setUser(data);
-                console.log(user);
             }),
         []
     );
