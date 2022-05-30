@@ -24,6 +24,10 @@ added NavBar and links for each user and their personal page
 
 added Login page + form in it and Search in Users
 
+# Lesson 10
+
+added RegisterPage and Edit user page
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
