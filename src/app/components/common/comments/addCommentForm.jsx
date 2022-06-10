@@ -64,7 +64,7 @@ const AddCommentForm = ({ onSubmit }) => {
                     name="userId"
                     value={data.userId}
                     defaultOption="Выберите пользователя"
-                    error={errors.content}
+                    error={errors.userId}
                 />
                 <TextAreaField
                     value={data.content}
