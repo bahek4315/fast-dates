@@ -113,80 +113,63 @@ const UserEditPage = () => {
         return <p>loading...</p>;
     } else {
         return (
-            <form
-                className="container justify-content-center mt-4 shadow p-3"
-                onSubmit={handleSubmit}
-            >
-                <TextField
-                    label="Измените имя"
-                    name="name"
-                    value={userInfo.name}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Измените почту"
-                    name="email"
-                    value={userInfo.email}
-                    onChange={handleChange}
-                />
-                {/* <div className="mb-4">
-                    <label htmlFor="profession">Измените профессию</label>
-                    <select
-                        className="form-select"
-                        onChange={handleChange}
-                        value={userInfo.profession._id}
-                        id="profession"
-                        name="profession"
-                    >
-                        <option disabled value="">
-                            Выберите профессию
-                        </option>
-                        {professions.length > 0 &&
-                            professions.map((profession) => {
-                                return (
-                                    <option
-                                        value={profession.value}
-                                        key={profession.value}
-                                    >
-                                        {profession.label}
-                                    </option>
-                                );
-                            })}
-                    </select>
-                </div> */}
-                <SelectField
-                    label="Измените профессию"
-                    value={userInfo.profession.name}
-                    onChange={handleChange}
-                    defaultOption="Профессия..."
-                    options={professions}
-                    name="profession"
-                />
-                <RadioField
-                    options={[
-                        { name: 'Мужской', value: 'male' },
-                        { name: 'Женский', value: 'female' },
-                        { name: 'Иной', value: 'other' }
-                    ]}
-                    name="sex"
-                    value={userInfo.sex}
-                    onChange={handleChange}
-                    label="Измените пол"
-                />
-                <MultiSelectField
-                    options={qualities}
-                    onChange={handleChange}
-                    defaultValue={getFromQualities(userInfo.qualities)}
-                    name="qualities"
-                    label="Измените качества"
-                />
+            <>
                 <button
-                    className="btn btn-primary w-100 mx-auto mb-4"
-                    type="submit"
+                    className="btn btn-primary mt-4 mx-4"
+                    onClick={() => history.goBack()}
                 >
-                    Сохранить изменения
+                    Назад
                 </button>
-            </form>
+                <form
+                    className="container justify-content-center mt-4 shadow p-3"
+                    onSubmit={handleSubmit}
+                >
+                    <TextField
+                        label="Измените имя"
+                        name="name"
+                        value={userInfo.name}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        label="Измените почту"
+                        name="email"
+                        value={userInfo.email}
+                        onChange={handleChange}
+                    />
+                    <SelectField
+                        label="Измените профессию"
+                        value={userInfo.profession.name}
+                        onChange={handleChange}
+                        defaultOption="Профессия..."
+                        options={professions}
+                        name="profession"
+                    />
+                    <RadioField
+                        options={[
+                            { name: 'Мужской', value: 'male' },
+                            { name: 'Женский', value: 'female' },
+                            { name: 'Иной', value: 'other' }
+                        ]}
+                        name="sex"
+                        value={userInfo.sex}
+                        onChange={handleChange}
+                        label="Измените пол"
+                    />
+                    <MultiSelectField
+                        options={qualities}
+                        onChange={handleChange}
+                        defaultValue={getFromQualities(userInfo.qualities)}
+                        name="qualities"
+                        label="Измените качества"
+                    />
+                    <button
+                        className="btn btn-primary w-100 mx-auto mb-4"
+                        type="submit"
+                    >
+                        Сохранить изменения
+                    </button>
+                </form>
+            </>
         );
     }
 };

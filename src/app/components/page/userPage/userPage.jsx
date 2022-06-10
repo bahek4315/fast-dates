@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import api from '../../../api';
-import Qualities from '../../ui/qualities';
+import UserCard from '../../ui/userCard';
+import QualitiesCard from '../../ui/qualitiesCard';
+import MeetingsCard from '../../ui/meetingsCard';
+import Comments from '../../ui/comments';
 
 const UserPage = () => {
     const [user, setUser] = useState();
@@ -18,16 +21,18 @@ const UserPage = () => {
     if (user) {
         return (
             <>
-                <h3>{user.name}</h3>
-                <h4>{`Профессия: ${user?.profession?.name}`}</h4>
-                <div>
-                    <Qualities qualities={user?.qualities}></Qualities>
+                <div className="container">
+                    <div className="row gutters-sm">
+                        <div className="col-md-4 mb-3">
+                            <UserCard user={user} />
+                            <QualitiesCard data={user.qualities} />
+                            <MeetingsCard value={user.completedMeetings} />
+                        </div>
+                        <div className="col-md-8">
+                            <Comments />
+                        </div>
+                    </div>
                 </div>
-                <h4>{`Встретился, раз: ${user.completedMeetings}`}</h4>
-                <h4>{`Оценка: ${user.rate}`}</h4>
-                <button>
-                    <Link to={`/users/${userId}/edit`}>Изменить</Link>
-                </button>
             </>
         );
     }
