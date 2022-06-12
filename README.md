@@ -32,6 +32,10 @@ added RegisterPage and Edit user page
 
 edited User Page + comments, add button in edit page
 
+# Lesson 14
+
+All data is obtained from server, not fake.api, UserList is made
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
