@@ -42,7 +42,7 @@ const useMockData = () => {
         try {
             setCount(0);
             setProgress(0);
-            console.log('started');
+            setStatus(statusConsts.idle);
             for (const prof of professions) {
                 await httpService.put('profession/' + prof._id, prof);
                 incrementCount();
