@@ -7,7 +7,7 @@ import GroupList from '../../common/groupList';
 import api from '../../../api';
 import _ from 'lodash';
 import SearchBar from '../../common/searchBar';
-import { UseUser } from '../../../hooks/useUsers';
+import { useUser } from '../../../hooks/useUsers';
 
 const UsersListPage = () => {
     const pageSize = 8;
@@ -17,7 +17,7 @@ const UsersListPage = () => {
     const [sortBy, setSortBy] = useState({ path: 'name', order: 'asc' });
     const [searchData, setSearchData] = useState('');
 
-    const { users } = UseUser();
+    const { users } = useUser();
 
     const handleDelete = (userId) => {
         // setUsers(users.filter((user) => user._id !== userId));
