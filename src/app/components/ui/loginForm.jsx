@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useLogin } from '../../hooks/useLogin';
 import { validator } from '../../utils/validator';
 import CheckBoxField from '../common/form/checkBoxField';
 import TextField from '../common/form/textField';
 
 const LoginForm = () => {
+    const history = useHistory();
+    const { signIn } = useLogin();
     const [data, setData] = useState({
         email: '',
         password: '',
@@ -29,11 +33,18 @@ const LoginForm = () => {
         validate();
     }, [data]);
 
-    const handleSubmit = (evt) => {
+    const handleSubmit = async (evt) => {
         evt.preventDefault();
         const isValid = validate();
         if (!isValid) return;
         console.log(data);
+        try {
+            await signIn(data);
+            history.push('/');
+        } catch (error) {
+            console.log(error);
+            setErrors(error);
+        }
     };
 
     const validatorConfig = {
