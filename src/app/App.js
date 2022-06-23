@@ -10,6 +10,7 @@ import ProfessionProvider from './hooks/useProfessions';
 import QualityProvider from './hooks/useQualities';
 import AuthProvider from './hooks/useAuth';
 import LoginProvider from './hooks/useLogin';
+import ProtectedRoute from './components/common/protectedRoute';
 
 function App() {
     return (
@@ -22,7 +23,7 @@ function App() {
                             <Switch>
                                 <Route path="/" exact component={MainPage} />
                                 <Route path="/login/:type?" component={Login} />
-                                <Route
+                                <ProtectedRoute
                                     path="/users/:userId?/:isEdit?"
                                     component={Users}
                                 />

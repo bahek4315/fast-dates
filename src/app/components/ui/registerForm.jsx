@@ -14,6 +14,7 @@ const RegisterForm = () => {
     const history = useHistory();
     const [data, setData] = useState({
         email: '',
+        name: '',
         password: '',
         profession: '',
         sex: 'male',
@@ -81,6 +82,15 @@ const RegisterForm = () => {
                 message: 'Электронная почта введена неверно'
             }
         },
+        name: {
+            isRequired: {
+                message: 'Имя обязательно для заполнения'
+            },
+            min: {
+                message: 'Имя должно состоять минимум из двух букв',
+                value: 2
+            }
+        },
         password: {
             isRequired: {
                 message: 'Пароль обязателен для заполнения'
@@ -118,6 +128,13 @@ const RegisterForm = () => {
                     value={data.email}
                     onChange={handleChange}
                     error={errors?.email}
+                />
+                <TextField
+                    label="Name"
+                    name="name"
+                    value={data.name}
+                    onChange={handleChange}
+                    error={errors?.name}
                 />
                 <TextField
                     label="Password"

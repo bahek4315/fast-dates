@@ -3,10 +3,17 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import UserService from '../services/userService';
 import { toast } from 'react-toastify';
-import { setTokens } from '../services/localStorageService';
+import localStorageService, {
+    setTokens
+} from '../services/localStorageService';
 
 const AuthContext = React.createContext();
-const httpAuth = axios.create();
+export const httpAuth = axios.create({
+    baseURL: 'https://identitytoolkit.googleapis.com/v1/',
+    params: {
+        key: process.env.REACT_APP_FIREBASE_KEY
+    }
+});
 
 export const useAuth = () => {
     return useContext(AuthContext);
@@ -15,6 +22,21 @@ export const useAuth = () => {
 const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState([]);
     const [error, setError] = useState(null);
+
+    async function getUserData() {
+        try {
+            const { content } = await UserService.getCurrentUser();
+            setCurrentUser(content);
+        } catch (error) {
+            setError(error);
+        }
+    }
+
+    useEffect(() => {
+        if (localStorageService.getAccessToken()) {
+            getUserData();
+        }
+    }, []);
 
     useEffect(() => {
         if (error !== null) {
@@ -29,12 +51,18 @@ const AuthProvider = ({ children }) => {
 
     async function createUser(data) {
         try {
-            const { content } = UserService.create(data);
+            const { content } = await UserService.create(data);
+            console.log(content);
             setCurrentUser(content);
         } catch (error) {
             errorCatcher(error);
         }
     }
+
+    function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
     async function signUp({ email, password, ...rest }) {
         const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
 
@@ -45,7 +73,13 @@ const AuthProvider = ({ children }) => {
                 returnSecureToken: true
             });
             setTokens(data);
-            await createUser({ _id: data.localId, email, ...rest });
+            await createUser({
+                _id: data.localId,
+                email,
+                completedMeetings: randomInt(0, 200),
+                rate: randomInt(1, 5),
+                ...rest
+            });
             console.log(data);
         } catch (error) {
             errorCatcher(error);

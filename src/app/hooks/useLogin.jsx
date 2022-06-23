@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { setTokens } from '../services/localStorageService';
+import UserService from '../services/userService';
 
 const LoginContext = React.createContext();
 const httpLogin = axios.create();
@@ -13,7 +14,7 @@ export const useLogin = () => {
 
 const LoginProvider = ({ children }) => {
     const [error, setError] = useState(null);
-
+    const [currentUser, setCurrentUser] = useState({});
     useEffect(() => {
         if (error !== null) {
             toast(error);
@@ -25,6 +26,15 @@ const LoginProvider = ({ children }) => {
         setError(message);
     }
 
+    async function getUserData() {
+        try {
+            const { content } = await UserService.getCurrentUser();
+            setCurrentUser(content);
+        } catch (error) {
+            setError(error);
+        }
+    }
+
     async function signIn({ email, password, ...rest }) {
         const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
         try {
@@ -34,6 +44,7 @@ const LoginProvider = ({ children }) => {
                 returnSecureToken: true
             });
             setTokens(data);
+            getUserData();
             console.log(data);
         } catch (error) {
             errorCatcher(error);
@@ -55,7 +66,7 @@ const LoginProvider = ({ children }) => {
         }
     }
     return (
-        <LoginContext.Provider value={{ signIn }}>
+        <LoginContext.Provider value={{ signIn, currentUser }}>
             {children}
         </LoginContext.Provider>
     );
