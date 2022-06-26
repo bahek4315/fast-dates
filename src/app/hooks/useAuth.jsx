@@ -109,7 +109,6 @@ const AuthProvider = ({ children }) => {
 
     async function signUp({ email, password, ...rest }) {
         const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
-
         try {
             const { data } = await httpAuth.post(url, {
                 email,
@@ -143,8 +142,20 @@ const AuthProvider = ({ children }) => {
             }
         }
     }
+
+    async function updateUserData(data) {
+        try {
+            const { content } = await UserService.updateCurrentUser(data);
+            setCurrentUser(content);
+        } catch (error) {
+            errorCatcher(error);
+        }
+    }
+
     return (
-        <AuthContext.Provider value={{ signUp, currentUser, signIn, logOut }}>
+        <AuthContext.Provider
+            value={{ signUp, currentUser, signIn, logOut, updateUserData }}
+        >
             {!isLoading ? children : 'Loading...'}
         </AuthContext.Provider>
     );
