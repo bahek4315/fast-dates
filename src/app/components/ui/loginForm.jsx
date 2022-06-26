@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useLogin } from '../../hooks/useLogin';
+import { useAuth } from '../../hooks/useAuth';
 import { validator } from '../../utils/validator';
 import CheckBoxField from '../common/form/checkBoxField';
 import TextField from '../common/form/textField';
 
 const LoginForm = () => {
     const history = useHistory();
-    const { signIn } = useLogin();
+    const { signIn } = useAuth();
     const [data, setData] = useState({
         email: '',
         password: '',
@@ -40,7 +40,11 @@ const LoginForm = () => {
         console.log(data);
         try {
             await signIn(data);
-            history.push('/');
+            history.push(
+                history.location.state
+                    ? history.location.state.from.pathname
+                    : '/'
+            );
         } catch (error) {
             console.log(error);
             setErrors(error);

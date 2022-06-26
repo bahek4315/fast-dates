@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import localStorageService, {
     setTokens
 } from '../services/localStorageService';
+import { useHistory } from 'react-router-dom';
 
 const AuthContext = React.createContext();
 export const httpAuth = axios.create({
@@ -20,8 +21,10 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState([]);
+    const [currentUser, setCurrentUser] = useState();
     const [error, setError] = useState(null);
+    const [isLoading, setLoading] = useState(true);
+    const history = useHistory();
 
     async function getUserData() {
         try {
@@ -29,12 +32,16 @@ const AuthProvider = ({ children }) => {
             setCurrentUser(content);
         } catch (error) {
             setError(error);
+        } finally {
+            setLoading(false);
         }
     }
 
     useEffect(() => {
         if (localStorageService.getAccessToken()) {
             getUserData();
+        } else {
+            setLoading(false);
         }
     }, []);
 
@@ -63,6 +70,43 @@ const AuthProvider = ({ children }) => {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
+    function logOut() {
+        localStorageService.removeAuthData();
+        setCurrentUser(null);
+        history.push('/');
+    }
+
+    async function signIn({ email, password, ...rest }) {
+        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`;
+        try {
+            const { data } = await httpAuth.post(url, {
+                email,
+                password,
+                returnSecureToken: true
+            });
+            setTokens(data);
+            await getUserData();
+            console.log(data);
+        } catch (error) {
+            errorCatcher(error);
+            const { code, message } = error.response.data.error;
+            if (code === 400) {
+                if (message === 'EMAIL_NOT_FOUND') {
+                    const errorObject = {
+                        email: 'Пользователь с таким email не найден'
+                    };
+                    throw errorObject;
+                }
+                if (message === 'INVALID_PASSWORD') {
+                    const errorObject = {
+                        password: 'Неверный пароль'
+                    };
+                    throw errorObject;
+                }
+            }
+        }
+    }
+
     async function signUp({ email, password, ...rest }) {
         const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`;
 
@@ -78,6 +122,11 @@ const AuthProvider = ({ children }) => {
                 email,
                 completedMeetings: randomInt(0, 200),
                 rate: randomInt(1, 5),
+                image: `https://avatars.dicebear.com/api/avataaars/${(
+                    Math.random() + 1
+                )
+                    .toString(36)
+                    .substring(7)}.svg`,
                 ...rest
             });
             console.log(data);
@@ -95,8 +144,8 @@ const AuthProvider = ({ children }) => {
         }
     }
     return (
-        <AuthContext.Provider value={{ signUp, currentUser }}>
-            {children}
+        <AuthContext.Provider value={{ signUp, currentUser, signIn, logOut }}>
+            {!isLoading ? children : 'Loading...'}
         </AuthContext.Provider>
     );
 };

@@ -1,45 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import api from '../../../api';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import MultiSelectField from '../../common/form/multiSelectField';
 import RadioField from '../../common/form/radioField';
 import TextField from '../../common/form/textField';
 import SelectField from '../../common/form/selectField';
+import { useProfessions } from '../../../hooks/useProfessions';
+import { useQualities } from '../../../hooks/useQualities';
+import { useAuth } from '../../../hooks/useAuth';
 
 const UserEditPage = () => {
-    const params = useParams();
     const history = useHistory();
+    const { currentUser } = useAuth();
     const [userInfo, setUserInfo] = useState({
-        name: '',
-        email: '',
-        profession: {},
-        sex: ''
+        name: currentUser.name,
+        email: currentUser.email,
+        profession: currentUser.profession,
+        sex: currentUser.sex
     });
-    const [professions, setProfessions] = useState([]);
-    const [qualities, setQualities] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    useEffect(() => {
-        setIsLoading(true);
-        api.users.getById(params.userId).then((data) => setUserInfo(data));
-        api.qualities
-            .fetchAll()
-            .then((data) => {
-                const qualitiesList = Object.keys(data).map((optionName) => ({
-                    label: data[optionName].name,
-                    value: data[optionName]._id,
-                    color: data[optionName].color
-                }));
-                setQualities(qualitiesList);
-            })
-            .finally(() => setIsLoading(false));
-        api.professions.fetchAll().then((data) => {
-            const professionsList = Object.keys(data).map((professionName) => ({
-                label: data[professionName].name,
-                value: data[professionName]._id
-            }));
-            setProfessions(professionsList);
-        });
-    }, []);
+
+    const { professions, isLoading: professionsLoading } = useProfessions();
+    const { qualities, isLoading: qualitiesLoading } = useQualities();
+
+    console.log(currentUser);
+
     const handleChange = (event) => {
         if (event?.target?.name === 'profession') {
             setUserInfo((prevState) => ({
@@ -75,41 +58,14 @@ const UserEditPage = () => {
             return qualitiesArray;
         }
     };
-    const getQualities = (elements) => {
-        const qualitiesArray = [];
-        for (const elem of elements) {
-            for (const quality in qualities) {
-                if (elem.value === qualities[quality].value) {
-                    qualitiesArray.push({
-                        _id: qualities[quality].value,
-                        name: qualities[quality].label,
-                        color: qualities[quality].color
-                    });
-                }
-            }
-        }
-        return qualitiesArray;
-    };
 
-    const getProfessionById = (id) => {
-        for (const prof of professions) {
-            if (prof.value === id) {
-                return { _id: prof.value, name: prof.label };
-            }
-        }
-    };
     const handleSubmit = (e) => {
         e.preventDefault();
-        const submitData = {
-            ...userInfo,
-            qualities: getQualities(userInfo.qualities),
-            profession: getProfessionById(userInfo.profession)
-        };
-        api.users.update(userInfo._id, submitData);
+        console.log(e);
         history.goBack();
     };
 
-    if (isLoading) {
+    if (professionsLoading && qualitiesLoading) {
         return <p>loading...</p>;
     } else {
         return (

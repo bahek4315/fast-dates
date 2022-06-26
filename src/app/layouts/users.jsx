@@ -14,7 +14,7 @@ const Users = () => {
                 {isEdit ? (
                     <UserEditPage />
                 ) : userId ? (
-                    <UserPage />
+                    <UserPage userId={userId} />
                 ) : (
                     <UsersListPage />
                 )}
