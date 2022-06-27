@@ -34,7 +34,11 @@ edited User Page + comments, add button in edit page
 
 # Lesson 14
 
-All data is obtained from server, not fake.api, UserList is made
+All data is obtained from fake server, not fake.api, UserList is made
+
+# Lesson 15
+
+Data is sent and received from FireBase server, not fake server, done sign up and sign in
 
 # Getting Started with Create React App
 

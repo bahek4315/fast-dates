@@ -1,7 +1,14 @@
 import React from 'react';
 import Select from 'react-select';
 import PropTypes from 'prop-types';
-const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
+const MultiSelectField = ({
+    options,
+    onChange,
+    name,
+    label,
+    defaultValue,
+    error
+}) => {
     const optionsArray = [];
     if (!Array.isArray(options) && typeof options === 'object') {
         Object.keys(options).forEach((opt) => {
@@ -29,6 +36,7 @@ const MultiSelectField = ({ options, onChange, name, label, defaultValue }) => {
                 classNamePrefix="select"
                 onChange={handleChange}
             />
+            {error && <div className="text-danger">{error}</div>}
         </div>
     );
 };
@@ -38,6 +46,7 @@ MultiSelectField.propTypes = {
     onChange: PropTypes.func,
     name: PropTypes.string,
     label: PropTypes.string,
+    error: PropTypes.string,
     defaultValue: PropTypes.array
 };
 

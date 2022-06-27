@@ -23,7 +23,7 @@ const QualityProvider = ({ children }) => {
         return qualities.find((p) => p._id === id);
     }
 
-    async function getProfessionsList() {
+    async function getQualitiesList() {
         try {
             const { content } = await QualityService.get();
             setQualities(content);
@@ -34,7 +34,7 @@ const QualityProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        getProfessionsList();
+        getQualitiesList();
     }, []);
 
     useEffect(() => {

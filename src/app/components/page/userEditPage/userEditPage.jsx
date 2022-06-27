@@ -1,45 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import api from '../../../api';
+import React, { useState, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import MultiSelectField from '../../common/form/multiSelectField';
 import RadioField from '../../common/form/radioField';
 import TextField from '../../common/form/textField';
 import SelectField from '../../common/form/selectField';
+import { useProfessions } from '../../../hooks/useProfessions';
+import { useQualities } from '../../../hooks/useQualities';
+import { useAuth } from '../../../hooks/useAuth';
+import { validator } from '../../../utils/validator';
 
 const UserEditPage = () => {
-    const params = useParams();
+    const { userId } = useParams();
     const history = useHistory();
+    const [errors, setErrors] = useState({});
+    const { currentUser, updateUserData } = useAuth();
+    const { professions } = useProfessions();
+    const { qualities, getQuality } = useQualities();
+
     const [userInfo, setUserInfo] = useState({
-        name: '',
-        email: '',
-        profession: {},
-        sex: ''
+        _id: userId,
+        name: currentUser.name,
+        email: currentUser.email,
+        profession: currentUser.profession,
+        sex: currentUser.sex,
+        qualities: currentUser.qualities.map((q) => getQuality(q))
     });
-    const [professions, setProfessions] = useState([]);
-    const [qualities, setQualities] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    useEffect(() => {
-        setIsLoading(true);
-        api.users.getById(params.userId).then((data) => setUserInfo(data));
-        api.qualities
-            .fetchAll()
-            .then((data) => {
-                const qualitiesList = Object.keys(data).map((optionName) => ({
-                    label: data[optionName].name,
-                    value: data[optionName]._id,
-                    color: data[optionName].color
-                }));
-                setQualities(qualitiesList);
-            })
-            .finally(() => setIsLoading(false));
-        api.professions.fetchAll().then((data) => {
-            const professionsList = Object.keys(data).map((professionName) => ({
-                label: data[professionName].name,
-                value: data[professionName]._id
-            }));
-            setProfessions(professionsList);
-        });
-    }, []);
+
     const handleChange = (event) => {
         if (event?.target?.name === 'profession') {
             setUserInfo((prevState) => ({
@@ -58,58 +44,88 @@ const UserEditPage = () => {
             }));
         }
     };
+
+    const transformProfessionsToRender = (arr) => {
+        return arr.map((item) => {
+            return { label: item.name, value: item._id };
+        });
+    };
+
+    const transformQualitiesToRender = (arr) => {
+        return arr.map((item) => {
+            return { label: item.name, value: item._id, color: item.color };
+        });
+    };
+
     const getFromQualities = (elements) => {
         if (elements) {
-            const qualitiesArray = [];
-            for (const elem of elements) {
-                for (const quality in qualities) {
-                    if (elem._id === qualities[quality].value) {
-                        qualitiesArray.push({
-                            value: elem._id,
-                            label: elem.name,
-                            color: elem.color
-                        });
-                    }
-                }
-            }
-            return qualitiesArray;
+            return transformQualitiesToRender(elements);
         }
-    };
-    const getQualities = (elements) => {
-        const qualitiesArray = [];
-        for (const elem of elements) {
-            for (const quality in qualities) {
-                if (elem.value === qualities[quality].value) {
-                    qualitiesArray.push({
-                        _id: qualities[quality].value,
-                        name: qualities[quality].label,
-                        color: qualities[quality].color
-                    });
-                }
-            }
-        }
-        return qualitiesArray;
     };
 
-    const getProfessionById = (id) => {
-        for (const prof of professions) {
-            if (prof.value === id) {
-                return { _id: prof.value, name: prof.label };
+    const validatorConfig = {
+        email: {
+            isRequired: {
+                message: 'Электронная почта обязательна для заполнения'
+            },
+            isEmail: {
+                message: 'Электронная почта введена неверно'
+            }
+        },
+        name: {
+            isRequired: {
+                message: 'Имя обязательно для заполнения'
+            },
+            min: {
+                message: 'Имя должно состоять минимум из двух букв',
+                value: 2
+            }
+        },
+        profession: {
+            isRequired: {
+                message: 'Обязательно выберите профессию'
+            }
+        },
+        qualities: {
+            isRequired: {
+                message: 'Обязательно выберите качества'
             }
         }
     };
-    const handleSubmit = (e) => {
+
+    const validate = () => {
+        const errors = validator(userInfo, validatorConfig);
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const isValid = Object.keys(errors).length === 0;
+
+    useEffect(() => {
+        validate();
+    }, [userInfo]);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const submitData = {
+        const isValid = validate();
+        if (!isValid) return;
+        const newData = {
             ...userInfo,
-            qualities: getQualities(userInfo.qualities),
-            profession: getProfessionById(userInfo.profession)
+            qualities: userInfo.qualities.map((q) => q.value)
         };
-        api.users.update(userInfo._id, submitData);
-        history.goBack();
+        console.log(newData);
+        try {
+            await updateUserData(newData);
+            history.push('/');
+        } catch (error) {
+            console.log(error);
+            setErrors(error);
+        } finally {
+            history.goBack();
+        }
     };
 
-    if (isLoading) {
+    if (!userInfo.profession && !userInfo.qualities) {
         return <p>loading...</p>;
     } else {
         return (
@@ -129,20 +145,23 @@ const UserEditPage = () => {
                         name="name"
                         value={userInfo.name}
                         onChange={handleChange}
+                        error={errors?.name}
                     />
                     <TextField
                         label="Измените почту"
                         name="email"
                         value={userInfo.email}
                         onChange={handleChange}
+                        error={errors?.email}
                     />
                     <SelectField
                         label="Измените профессию"
-                        value={userInfo.profession.name}
+                        value={userInfo.profession}
                         onChange={handleChange}
                         defaultOption="Профессия..."
-                        options={professions}
+                        options={transformProfessionsToRender(professions)}
                         name="profession"
+                        error={errors?.profession}
                     />
                     <RadioField
                         options={[
@@ -156,15 +175,17 @@ const UserEditPage = () => {
                         label="Измените пол"
                     />
                     <MultiSelectField
-                        options={qualities}
+                        options={transformQualitiesToRender(qualities)}
                         onChange={handleChange}
                         defaultValue={getFromQualities(userInfo.qualities)}
                         name="qualities"
                         label="Измените качества"
+                        error={errors?.qualities}
                     />
                     <button
                         className="btn btn-primary w-100 mx-auto mb-4"
                         type="submit"
+                        disabled={!isValid}
                     >
                         Сохранить изменения
                     </button>

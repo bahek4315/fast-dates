@@ -1,6 +1,6 @@
 import React from 'react';
-import Qualities from './qualities';
 import PropTypes from 'prop-types';
+import QualitiesListServer from './qualitiesListServer';
 
 const QualitiesCard = ({ data }) => {
     return (
@@ -10,7 +10,7 @@ const QualitiesCard = ({ data }) => {
                     <span>Qualities</span>
                 </h5>
                 <p className="card-text">
-                    <Qualities qualities={data} />
+                    <QualitiesListServer qualities={data} />
                 </p>
             </div>
         </div>
