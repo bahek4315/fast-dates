@@ -61,7 +61,7 @@ const UsersListPage = () => {
 
     if (users) {
         const filteredSearchUsers = users.filter((user) =>
-            user.name.toLowerCase().includes(searchData.toLowerCase())
+            user.name?.toLowerCase().includes(searchData.toLowerCase())
         );
 
         // const filteredUsers = selectedProf
